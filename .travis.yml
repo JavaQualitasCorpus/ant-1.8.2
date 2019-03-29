@@ -1,0 +1,20 @@
+language: java
+
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "IRZBjkA572qYwPyNP7V4z83PzwfV/A4i0RyvbcTcsB+x8qcNOqE9ljUXYzyG6GrwKi+R3jj0uJRvcDEgLeVYPaGS6AlpFkbcP2r3408hiu6O4NUgS67wtVbhpbpeNDmtuVVDe0CAJVHqkH7M7oM9/+3qrt8bRbMbmx/FO6tNkD93jyN0p7J2GDWc1SN1e3FYwNSjSlBo6OPBIb2UPbvAIh166kBFaj0aVCx6yOb6mZCeAbv2Q3dCttr+9Mw3Tw3/ZAmxYk2sM65ockzksxgnqh3duAevfCyYJTLzMQmUDx+MMsJI9bBL+sQAJb6xrNZKGOQK6P/v74w2LuP42ZIT1Hv7XFwEbuiQyO00jVjBoqv5V9y3A1yCkzsmr6DSfy/3l/P0Us8x1Q1J4+mlokR3xS9AehNByaXt4a+Ij+Lc0uFV2vcHWhPiNdyiTCTsvtyT9QJqsZab99akglhYsO0tvV/UH1pzI1yk7e4zdPW/gIoahH9g5U8+a+19k4XdGhMZZ6didTmE7EW7xGTAsv7PH/S2kUJPR13lmQdYTS1DGw3Tp3tvPmnDPFCxHFvcNuG6bao5ExySfbe0mPfMfl9VudVN481eoW8jCH+TI8OB0TRITRdym4OKoWMapbkv1icx8RECWZVH+UopB7PX6Qvc3gtInu9itcKVyHmJatVdCL4="
+
+before_install:
+  - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+
+addons:
+  coverity_scan:
+    project:
+      name: "JavaQualitasCorpus/ant-1.8.2"
+      description: "<Your project description here>"
+    notification_email: lujan.savanna@gmail.com
+    build_command_prepend: mvn clean
+    build_command: mvn -DskipTests=true compile
+    branch_pattern: coverity_scan
